@@ -1,0 +1,43 @@
+{
+  "name": "diff-em",
+  "version": "1.0.0",
+  "description": "A collection of utilities to calculate differences between JavaScript objects.",
+  "author": "Frederik Goovaerts",
+  "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json && tsc --project tsconfig.types.json",
+    "prepublishOnly": "npm run build",
+    "lint:check": "eslint src",
+    "lint:fix": "npm run lint -- --fix",
+    "format:check": "prettier --check src",
+    "format:fix": "prettier --write src",
+    "test": "jest",
+    "test:coverage": "npm test --coverage"
+  },
+  "devDependencies": {
+    "@types/jest": "28.1.3",
+    "@typescript-eslint/eslint-plugin": "5.29.0",
+    "@typescript-eslint/parser": "5.29.0",
+    "eslint": "8.18.0",
+    "eslint-config-prettier": "8.5.0",
+    "jest": "28.1.1",
+    "prettier": "2.7.1",
+    "ts-jest": "28.0.5",
+    "typescript": "4.7.4"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README",
+    "LICENSE"
+  ]
+}
