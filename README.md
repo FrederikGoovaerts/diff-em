@@ -1,5 +1,6 @@
 # Diff 'em
 
+[![npm](https://img.shields.io/npm/v/diff-em)](https://www.npmjs.com/package/diff-em)
 [![Build Status](https://github.com/FrederikGoovaerts/diff-em/actions/workflows/ci.yaml/badge.svg)](https://github.com/FrederikGoovaerts/diff-em/actions/workflows/ci.yaml)
 [![Language](https://img.shields.io/github/languages/top/FrederikGoovaerts/diff-em)](#)
 [![License](https://img.shields.io/github/license/FrederikGoovaerts/diff-em)](LICENSE)
