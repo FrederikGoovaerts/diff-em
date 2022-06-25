@@ -6,6 +6,10 @@
 
 A collection of utilities to calculate differences between JavaScript objects. Written in TypeScript, zero dependencies and compatible with most recent Node.js and browser environments.
 
+> **Note**
+>
+> As this package is fairly new, feel free to log an issue when something does not seem to work as intended or is unclear. Feature requests will be considered case-by-case but are also very welcome.
+
 ## Installation
 
 ```
