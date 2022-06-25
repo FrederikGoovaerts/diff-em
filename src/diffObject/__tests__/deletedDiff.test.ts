@@ -1,13 +1,18 @@
 import { deletedDiff } from '../deletedDiff';
 
 describe('deletedDiff', () => {
-  describe('object', () => {
+  describe('for objects', () => {
     it('should return deleted properties as undefined', () => {
       expect(deletedDiff({ a: 1, b: 2 }, { a: 1 })).toEqual({ b: undefined });
+      expect(deletedDiff({ a: 2 }, 2)).toEqual(undefined);
     });
 
     it('should not return added or updated properties', () => {
       expect(deletedDiff({ a: 1 }, { a: 2, b: 2 })).toEqual({});
+      expect(deletedDiff({ a: { b: 2 } }, { a: 2 })).toEqual({});
+      expect(
+        deletedDiff({ a: new Date('2020') }, { a: new Date('2022') }),
+      ).toEqual({});
     });
 
     it('should apply deletedDiff on nested objects', () => {

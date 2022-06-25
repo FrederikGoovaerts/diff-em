@@ -1,4 +1,4 @@
-import { hasProperty, isDate, isEmptyObject, isObject } from '../utils';
+import { hasProperty, isDate, isEmptyObject, isObject } from '../object';
 
 describe('isDate', () => {
   it('should return true for a Date object', () => {

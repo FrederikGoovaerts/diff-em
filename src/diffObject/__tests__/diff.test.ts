@@ -2,25 +2,26 @@ import { diff } from '../diff';
 
 describe('diff', () => {
   describe('for objects', () => {
-    it('should return updated properties of same types', () => {
-      expect(diff({ a: 1 }, { a: 2 })).toEqual({ a: 2 });
-    });
-
-    it('should return updated properties of different types', () => {
-      expect(diff({ a: 1 }, { a: {} })).toEqual({ a: {} });
-      expect(diff({ a: 1 }, { a: null })).toEqual({ a: null });
-    });
-
     it('should return added properties', () => {
       expect(diff({ a: 1 }, { a: 1, b: 2 })).toEqual({ b: 2 });
     });
 
-    it('should return undefined for removed properties', () => {
-      expect(diff({ a: 1 }, {})).toEqual({ a: undefined });
+    it('should return updated properties', () => {
+      expect(diff({ a: 1, b: 1, c: 1 }, { a: 2, b: {}, c: null })).toEqual({
+        a: 2,
+        b: {},
+        c: null,
+      });
     });
 
-    it('should return only updated properties', () => {
-      expect(diff({ a: 1, c: 2 }, { a: 1, c: 3 })).toEqual({ c: 3 });
+    it('should return undefined for removed properties', () => {
+      const difference = diff({ a: 1 }, {});
+      expect(Object.keys(difference)).toEqual(['a']);
+    });
+
+    it('should not add keys for unchanged properties', () => {
+      const difference = diff({ a: 1, c: 2 }, { a: 1, c: 3 });
+      expect(Object.keys(difference)).toEqual(['c']);
     });
 
     it('should apply diff on nested objects', () => {
@@ -32,7 +33,7 @@ describe('diff', () => {
       });
     });
 
-    it('should return updated properties on all nested levels', () => {
+    it('should return changed properties on all nested levels', () => {
       expect(
         diff(
           { a: { b: 1 }, c: 2, d: { e: 1, f: undefined }, g: 'a' },
@@ -63,7 +64,7 @@ describe('diff', () => {
     });
   });
 
-  describe('for dates', () => {
+  describe('for Date objects', () => {
     const left = new Date('2020');
     const right = new Date('2022');
 

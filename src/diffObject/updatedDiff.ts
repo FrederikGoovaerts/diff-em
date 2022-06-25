@@ -1,5 +1,5 @@
 import { Diff } from './types';
-import { isDate, isEmptyObject, isObject } from './utils';
+import { isDate, isEmptyObject, isObject } from '../utils/object';
 
 export function updatedDiff<T extends object, U>(left: T, right: U): Diff<U> {
   if (!isObject(left)) {
