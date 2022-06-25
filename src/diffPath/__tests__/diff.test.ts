@@ -6,6 +6,34 @@ describe('diff', () => {
     expect(diff({ "a'b": 1 }, { "a'b": 2 })).toEqual(["$['a\\'b']"]);
   });
 
+  it('should respect the pathTruncateLength option', () => {
+    expect(
+      diff(
+        { a: { b: { c: { d: 1 } } } },
+        { a: { b: { c: { d: 2 } } } },
+        { pathTruncateLength: 2 },
+      ),
+    ).toEqual(['$.a.b']);
+    expect(
+      diff({ a: { b: 1 } }, { a: { b: 2 } }, { pathTruncateLength: 0 }),
+    ).toEqual(['$']);
+  });
+
+  it('should respect the includeInitial option', () => {
+    expect(
+      diff({ a: { b: 1 } }, { a: { b: 2 } }, { includeInitial: true }),
+    ).toEqual(['$.a.b']);
+    expect(
+      diff({ 'a.': { b: 1 } }, { 'a.': { b: 2 } }, { includeInitial: true }),
+    ).toEqual(["$['a.'].b"]);
+    expect(
+      diff({ a: { b: 1 } }, { a: { b: 2 } }, { includeInitial: false }),
+    ).toEqual(['a.b']);
+    expect(
+      diff({ 'a.': { b: 1 } }, { 'a.': { b: 2 } }, { includeInitial: false }),
+    ).toEqual(["['a.'].b"]);
+  });
+
   describe('for objects', () => {
     it('should return JSONPaths for added properties', () => {
       expect(diff({ a: 1 }, { a: 1, b: 2 })).toEqual(['$.b']);

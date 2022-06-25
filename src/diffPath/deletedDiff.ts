@@ -1,15 +1,20 @@
-import { getPathKey } from '../utils/jsonPath';
+import { joinPath, PathOptions } from '../utils/jsonPath';
 import { isObject, hasProperty } from '../utils/object';
 
-export function deletedDiff<T extends object, U>(left: T, right: U): string[] {
-  return deletedDiffRecursive(left, right, '$');
+export function deletedDiff<T extends object, U>(
+  left: T,
+  right: U,
+  options?: PathOptions,
+): string[] {
+  const paths = deletedDiffRecursive(left, right, []);
+  return paths.map((path) => joinPath(path, options));
 }
 
 export function deletedDiffRecursive<T extends object, U>(
   left: T,
   right: U,
-  path: string,
-): string[] {
+  currentPath: string[],
+): string[][] {
   if (!isObject(left)) {
     throw new Error('diff called on non-object');
   }
@@ -18,11 +23,11 @@ export function deletedDiffRecursive<T extends object, U>(
     return [];
   }
 
-  const result: string[] = [];
+  const result: string[][] = [];
 
   for (const key of Object.keys(left)) {
     if (!hasProperty(right, key)) {
-      result.push(`${path}${getPathKey(key)}`);
+      result.push([...currentPath, key]);
     }
   }
 
@@ -31,15 +36,14 @@ export function deletedDiffRecursive<T extends object, U>(
     const rightVal = right[key];
 
     if (isObject(leftVal) && isObject(rightVal)) {
-      const nestedPaths = deletedDiffRecursive(
-        leftVal,
-        rightVal,
-        `${path}${getPathKey(key)}`,
-      );
+      const nestedPaths = deletedDiffRecursive(leftVal, rightVal, [
+        ...currentPath,
+        key,
+      ]);
       result.push(...nestedPaths);
     } else {
       if (rightVal === undefined) {
-        result.push(`${path}${getPathKey(key)}`);
+        result.push([...currentPath, key]);
       }
     }
   }

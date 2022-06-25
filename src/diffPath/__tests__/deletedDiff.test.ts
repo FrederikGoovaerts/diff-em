@@ -6,6 +6,34 @@ describe('deletedDiff', () => {
     expect(deletedDiff({ "a'b": 1 }, {})).toEqual(["$['a\\'b']"]);
   });
 
+  it('should respect the pathTruncateLength option', () => {
+    expect(
+      deletedDiff(
+        { a: { b: { c: { d: 2 } } } },
+        { a: { b: { c: {} } } },
+        { pathTruncateLength: 2 },
+      ),
+    ).toEqual(['$.a.b']);
+    expect(
+      deletedDiff({ a: { b: 2 } }, { a: {} }, { pathTruncateLength: 0 }),
+    ).toEqual(['$']);
+  });
+
+  it('should respect the includeInitial option', () => {
+    expect(
+      deletedDiff({ a: { b: 2 } }, { a: {} }, { includeInitial: true }),
+    ).toEqual(['$.a.b']);
+    expect(
+      deletedDiff({ 'a.': { b: 2 } }, { 'a.': {} }, { includeInitial: true }),
+    ).toEqual(["$['a.'].b"]);
+    expect(
+      deletedDiff({ a: { b: 2 } }, { a: {} }, { includeInitial: false }),
+    ).toEqual(['a.b']);
+    expect(
+      deletedDiff({ 'a.': { b: 2 } }, { 'a.': {} }, { includeInitial: false }),
+    ).toEqual(["['a.'].b"]);
+  });
+
   describe('for objects', () => {
     it('should return deleted properties as undefined', () => {
       expect(deletedDiff({ a: 1, b: 2 }, { a: 1 })).toEqual(['$.b']);

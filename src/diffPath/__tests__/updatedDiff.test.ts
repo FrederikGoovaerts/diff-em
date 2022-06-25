@@ -6,6 +6,42 @@ describe('updatedDiff', () => {
     expect(updatedDiff({ "a'b": 1 }, { "a'b": 2 })).toEqual(["$['a\\'b']"]);
   });
 
+  it('should respect the pathTruncateLength option', () => {
+    expect(
+      updatedDiff(
+        { a: { b: { c: { d: 1 } } } },
+        { a: { b: { c: { d: 2 } } } },
+        { pathTruncateLength: 2 },
+      ),
+    ).toEqual(['$.a.b']);
+    expect(
+      updatedDiff({ a: { b: 1 } }, { a: { b: 2 } }, { pathTruncateLength: 0 }),
+    ).toEqual(['$']);
+  });
+
+  it('should respect the includeInitial option', () => {
+    expect(
+      updatedDiff({ a: { b: 1 } }, { a: { b: 2 } }, { includeInitial: true }),
+    ).toEqual(['$.a.b']);
+    expect(
+      updatedDiff(
+        { 'a.': { b: 1 } },
+        { 'a.': { b: 2 } },
+        { includeInitial: true },
+      ),
+    ).toEqual(["$['a.'].b"]);
+    expect(
+      updatedDiff({ a: { b: 1 } }, { a: { b: 2 } }, { includeInitial: false }),
+    ).toEqual(['a.b']);
+    expect(
+      updatedDiff(
+        { 'a.': { b: 1 } },
+        { 'a.': { b: 2 } },
+        { includeInitial: false },
+      ),
+    ).toEqual(["['a.'].b"]);
+  });
+
   describe('for objects', () => {
     it('should return JSONPaths for updated properties', () => {
       expect(updatedDiff({ a: 1 }, { a: 2 })).toEqual(['$.a']);
