@@ -1,13 +1,13 @@
 import { Diff } from './types';
 import { isObject, hasProperty, isEmptyObject } from '../utils/object';
 
-export function addedDiff<T extends object, U>(left: T, right: U): Diff<U> {
+export function addedDiff<T extends object, U>(left: T, right: U): Diff<T, U> {
   if (!isObject(left)) {
     throw new Error('diff called on non-object');
   }
 
   if (!isObject(right)) {
-    return right as Diff<U>;
+    return right as Diff<T, U>;
   }
 
   return Object.keys(right).reduce((acc, key) => {
@@ -27,5 +27,5 @@ export function addedDiff<T extends object, U>(left: T, right: U): Diff<U> {
     }
 
     return acc;
-  }, {} as Record<string, unknown>) as Diff<U>;
+  }, {} as Record<string, unknown>) as Diff<T, U>;
 }

@@ -1,17 +1,17 @@
 import { Diff } from './types';
 import { isDate, isEmptyObject, isObject, hasProperty } from '../utils/object';
 
-export function diff<T extends object, U>(left: T, right: U): Diff<U> {
+export function diff<T extends object, U>(left: T, right: U): Diff<T, U> {
   if (!isObject(left)) {
     throw new Error('diff called on non-object');
   }
 
   if (!isObject(right)) {
-    return right as Diff<U>;
+    return right as Diff<T, U>;
   }
 
   if (isDate(left) || isDate(right)) {
-    return (left.valueOf() == right.valueOf() ? {} : right) as Diff<U>;
+    return (left.valueOf() == right.valueOf() ? {} : right) as Diff<T, U>;
   }
 
   const deletedValues = Object.keys(left).reduce((acc, key) => {
@@ -41,5 +41,5 @@ export function diff<T extends object, U>(left: T, right: U): Diff<U> {
     }
 
     return acc;
-  }, deletedValues) as Diff<U>;
+  }, deletedValues) as Diff<T, U>;
 }
