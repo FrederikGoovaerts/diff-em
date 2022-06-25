@@ -1,18 +1,9 @@
 {
   "name": "diff-em",
   "version": "1.0.0",
-  "description": "A collection of utilities to calculate differences between JavaScript objects.",
   "author": "Frederik Goovaerts",
+  "description": "A collection of utilities to calculate differences between JavaScript objects.",
   "license": "MIT",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js"
-    }
-  },
   "scripts": {
     "build": "rm -rf dist && tsc --project tsconfig.cjs.json && tsc --project tsconfig.esm.json && tsc --project tsconfig.types.json",
     "prepublishOnly": "npm run build",
@@ -39,5 +30,25 @@
     "package.json",
     "README",
     "LICENSE"
-  ]
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
+    }
+  },
+  "keywords": [
+    "diff",
+    "difference",
+    "object",
+    "added",
+    "updated",
+    "deleted",
+    "jsonpath",
+    "typescript"
+  ],
+  "repository": "github:FrederikGoovaerts/diff-em"
 }
