@@ -2,8 +2,8 @@
 
 [![npm](https://img.shields.io/npm/v/diff-em)](https://www.npmjs.com/package/diff-em)
 [![Build Status](https://github.com/FrederikGoovaerts/diff-em/actions/workflows/ci.yaml/badge.svg)](https://github.com/FrederikGoovaerts/diff-em/actions/workflows/ci.yaml)
-[![Language](https://img.shields.io/github/languages/top/FrederikGoovaerts/diff-em)](#)
-[![License](https://img.shields.io/github/license/FrederikGoovaerts/diff-em)](LICENSE)
+[![Language](https://img.shields.io/github/languages/top/FrederikGoovaerts/diff-em)](src)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A collection of utilities to calculate differences between JavaScript objects. Written in TypeScript, zero dependencies and compatible with most recent Node.js and browser environments.
 
