@@ -46,6 +46,9 @@ describe('updatedDiff', () => {
     it('should return JSONPaths for updated properties', () => {
       expect(updatedDiff({ a: 1 }, { a: 2 })).toEqual(['$.a']);
       expect(updatedDiff({ a: 1 }, 2)).toEqual(['$']);
+      expect(
+        updatedDiff({ a: new Date('2020') }, { a: new Date('2022') }),
+      ).toEqual(['$.a']);
     });
 
     it('should not return JSONPaths for added or deleted properties', () => {

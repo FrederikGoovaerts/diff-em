@@ -42,6 +42,9 @@ describe('addedDiff', () => {
     it('should not return JSONPaths for updated or deleted properties', () => {
       expect(addedDiff({ a: 1, b: 2 }, { a: 2 })).toEqual([]);
       expect(addedDiff({ a: 1 }, 2)).toEqual([]);
+      expect(
+        addedDiff({ a: new Date('2020') }, { a: new Date('2022') }),
+      ).toEqual([]);
     });
 
     it('should apply addedDiff on nested objects', () => {

@@ -44,6 +44,9 @@ describe('diff', () => {
         '$.a',
         '$.b',
       ]);
+      expect(diff({ a: new Date('2020') }, { a: new Date('2022') })).toEqual([
+        '$.a',
+      ]);
     });
 
     it('should return JSONPaths for removed properties', () => {

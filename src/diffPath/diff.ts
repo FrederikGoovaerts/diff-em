@@ -1,3 +1,4 @@
+import { DiffMode, isInMode } from '../utils/diffMode';
 import { joinPath, PathOptions } from '../utils/jsonPath';
 import { isDate, isObject, hasProperty } from '../utils/object';
 
@@ -6,37 +7,51 @@ export function diff<T extends object, U>(
   right: U,
   options?: PathOptions,
 ): string[] {
-  const paths = diffRecursive(left, right, []);
+  const paths = diffBase(left, right, [], 'all');
   return paths.map((path) => joinPath(path, options));
 }
 
-export function diffRecursive<T extends object, U>(
+export function diffBase<T extends object, U>(
   left: T,
   right: U,
   currentPath: string[],
+  mode: DiffMode,
 ): string[][] {
   if (!isObject(left)) {
     throw new Error('diff called on non-object');
   }
 
   if (!isObject(right)) {
-    return [currentPath];
+    if (isInMode(mode, 'updated')) {
+      return [currentPath];
+    } else {
+      return [];
+    }
   }
 
-  if (isDate(left) || isDate(right)) {
+  if (isInMode(mode, 'updated') && (isDate(left) || isDate(right))) {
     return left.valueOf() == right.valueOf() ? [] : [currentPath];
   }
 
   const result: string[][] = [];
 
-  Object.keys(left).forEach((key) => {
-    if (!hasProperty(right, key)) {
-      result.push([...currentPath, key]);
-    }
-  });
+  if (isInMode(mode, 'deleted')) {
+    Object.keys(left).forEach((key) => {
+      if (!hasProperty(right, key)) {
+        result.push([...currentPath, key]);
+      }
+    });
+  }
 
   Object.keys(right).forEach((key) =>
-    appendAddedAndUpdated(result, [...currentPath, key], key, left, right),
+    appendAddedAndUpdated(
+      result,
+      [...currentPath, key],
+      key,
+      left,
+      right,
+      mode,
+    ),
   );
 
   return result;
@@ -48,8 +63,9 @@ function appendAddedAndUpdated(
   key: string,
   left: Record<string, unknown>,
   right: Record<string, unknown>,
+  mode: DiffMode,
 ): void {
-  if (!hasProperty(left, key)) {
+  if (isInMode(mode, 'added') && !hasProperty(left, key)) {
     // The key is added
     acc.push(pathToKey);
   } else {
@@ -58,9 +74,14 @@ function appendAddedAndUpdated(
 
     if (isObject(leftVal) && isObject(rightVal)) {
       // Find nested different properties
-      const nestedPaths = diffRecursive(leftVal, rightVal, pathToKey);
+      const nestedPaths = diffBase(leftVal, rightVal, pathToKey, mode);
       acc.push(...nestedPaths);
-    } else if (leftVal !== rightVal) {
+    } else if (
+      isInMode(mode, 'updated') &&
+      leftVal !== undefined &&
+      rightVal !== undefined &&
+      leftVal !== rightVal
+    ) {
       // The key is updated
       acc.push(pathToKey);
     }
