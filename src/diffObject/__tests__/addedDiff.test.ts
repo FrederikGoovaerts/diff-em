@@ -1,4 +1,4 @@
-import { addedDiff } from '../addedDiff';
+import { addedDiff } from '../diff';
 
 describe('addedDiff', () => {
   describe('for objects', () => {

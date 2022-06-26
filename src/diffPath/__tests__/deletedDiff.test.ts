@@ -1,4 +1,4 @@
-import { deletedDiff } from '../deletedDiff';
+import { deletedDiff } from '../diff';
 
 describe('deletedDiff', () => {
   it('should return safe JSONPaths', () => {
@@ -44,6 +44,9 @@ describe('deletedDiff', () => {
       expect(deletedDiff({ a: { b: 2 } }, { a: 2 })).toEqual([]);
       expect(deletedDiff({ a: 2 }, 2)).toEqual([]);
       expect(deletedDiff({ a: 1, b: 2 }, { a: 1, b: undefined })).toEqual([]);
+      expect(
+        deletedDiff({ a: new Date('2020') }, { a: new Date('2022') }),
+      ).toEqual([]);
     });
 
     it('should apply deletedDiff on nested objects', () => {
