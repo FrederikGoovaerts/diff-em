@@ -1,11 +1,8 @@
-name: "Tests"
+name: 'Tests'
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - '**'
 
 jobs:
   lint:

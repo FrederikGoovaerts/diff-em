@@ -1,7 +1,5 @@
 export function getPathKey(key: string): string {
-  return /^[A-Za-z0-9_]+$/.test(key)
-    ? `.${key}`
-    : `['${key.replace(/'/g, "\\'")}']`;
+  return /^\w+$/.test(key) ? `.${key}` : `['${key.replace(/'/g, "\\'")}']`;
 }
 
 export function joinPath(path: string[], options?: PathOptions): string {

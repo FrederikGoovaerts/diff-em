@@ -12,7 +12,7 @@
     "format:check": "prettier --check src",
     "format:fix": "prettier --write src",
     "test": "jest",
-    "test:coverage": "npm test --coverage"
+    "test:coverage": "npm test -- --coverage"
   },
   "devDependencies": {
     "@types/jest": "28.1.3",
