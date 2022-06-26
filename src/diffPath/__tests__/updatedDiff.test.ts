@@ -1,4 +1,4 @@
-import { updatedDiff } from '../updatedDiff';
+import { updatedDiff } from '../diff';
 
 describe('updatedDiff', () => {
   it('should return safe JSONPaths', () => {

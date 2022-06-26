@@ -2,15 +2,6 @@ import { DiffMode, isInMode } from '../utils/diffMode';
 import { joinPath, PathOptions } from '../utils/jsonPath';
 import { isDate, isObject, hasProperty } from '../utils/object';
 
-export function diff<T extends object, U>(
-  left: T,
-  right: U,
-  options?: PathOptions,
-): string[] {
-  const paths = diffBase(left, right, [], 'all');
-  return paths.map((path) => joinPath(path, options));
-}
-
 export function diffBase<T extends object, U>(
   left: T,
   right: U,
@@ -86,4 +77,40 @@ function appendAddedAndUpdated(
       acc.push(pathToKey);
     }
   }
+}
+
+export function diff<T extends object, U>(
+  left: T,
+  right: U,
+  options?: PathOptions,
+): string[] {
+  const paths = diffBase(left, right, [], 'all');
+  return paths.map((path) => joinPath(path, options));
+}
+
+export function addedDiff<T extends object>(
+  left: T,
+  right: unknown,
+  options?: PathOptions,
+): string[] {
+  const paths = diffBase(left, right, [], 'added');
+  return paths.map((path) => joinPath(path, options));
+}
+
+export function updatedDiff<T extends object, U>(
+  left: T,
+  right: U,
+  options?: PathOptions,
+): string[] {
+  const paths = diffBase(left, right, [], 'updated');
+  return paths.map((path) => joinPath(path, options));
+}
+
+export function deletedDiff<T extends object, U>(
+  left: T,
+  right: U,
+  options?: PathOptions,
+): string[] {
+  const paths = diffBase(left, right, [], 'deleted');
+  return paths.map((path) => joinPath(path, options));
 }

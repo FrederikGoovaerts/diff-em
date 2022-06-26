@@ -7,9 +7,11 @@ import {
 
 export { diffObject, addedDiffObject, updatedDiffObject, deletedDiffObject };
 
-import { diff as diffPath } from './diffPath/diff';
-import { addedDiff as addedDiffPath } from './diffPath/addedDiff';
-import { updatedDiff as updatedDiffPath } from './diffPath/updatedDiff';
-import { deletedDiff as deletedDiffPath } from './diffPath/deletedDiff';
+import {
+  diff as diffPath,
+  addedDiff as addedDiffPath,
+  updatedDiff as updatedDiffPath,
+  deletedDiff as deletedDiffPath,
+} from './diffPath/diff';
 
 export { diffPath, addedDiffPath, updatedDiffPath, deletedDiffPath };
