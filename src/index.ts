@@ -1,7 +1,9 @@
-import { diff as diffObject } from './diffObject/diff';
-import { addedDiff as addedDiffObject } from './diffObject/addedDiff';
-import { updatedDiff as updatedDiffObject } from './diffObject/updatedDiff';
-import { deletedDiff as deletedDiffObject } from './diffObject/deletedDiff';
+import {
+  diff as diffObject,
+  addedDiff as addedDiffObject,
+  updatedDiff as updatedDiffObject,
+  deletedDiff as deletedDiffObject,
+} from './diffObject/diff';
 
 export { diffObject, addedDiffObject, updatedDiffObject, deletedDiffObject };
 
