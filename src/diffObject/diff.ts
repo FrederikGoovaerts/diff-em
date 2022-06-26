@@ -14,32 +14,45 @@ export function diff<T extends object, U>(left: T, right: U): Diff<T, U> {
     return (left.valueOf() == right.valueOf() ? {} : right) as Diff<T, U>;
   }
 
-  const deletedValues = Object.keys(left).reduce((acc, key) => {
+  const result: Record<string, unknown> = {};
+
+  Object.keys(left).forEach((key) => {
     if (!hasProperty(right, key)) {
-      acc[key] = undefined;
+      result[key] = undefined;
     }
+  });
 
-    return acc;
-  }, {} as Record<string, unknown>);
+  Object.keys(right).forEach((key) =>
+    findAddedAndUpdated(result, key, left, right),
+  );
 
-  return Object.keys(right).reduce((acc, key) => {
-    if (!hasProperty(left, key)) {
-      acc[key] = right[key];
-      return acc;
-    }
+  return result as Diff<T, U>;
+}
 
+function findAddedAndUpdated(
+  acc: Record<string, unknown>,
+  key: string,
+  left: Record<string, unknown>,
+  right: Record<string, unknown>,
+): Record<string, unknown> {
+  if (!hasProperty(left, key)) {
+    // The key is added
+    acc[key] = right[key];
+  } else {
     const leftVal = left[key];
     const rightVal = right[key];
 
     if (isObject(leftVal) && isObject(rightVal)) {
+      // Find nested different properties
       const difference = diff(leftVal, rightVal);
       if (!isEmptyObject(difference) || isDate(difference)) {
         acc[key] = difference;
       }
     } else if (leftVal !== rightVal) {
+      // The key is updated
       acc[key] = rightVal;
     }
+  }
 
-    return acc;
-  }, deletedValues) as Diff<T, U>;
+  return acc;
 }

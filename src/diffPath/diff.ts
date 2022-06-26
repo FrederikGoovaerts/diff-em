@@ -29,30 +29,40 @@ export function diffRecursive<T extends object, U>(
 
   const result: string[][] = [];
 
-  for (const key of Object.keys(left)) {
+  Object.keys(left).forEach((key) => {
     if (!hasProperty(right, key)) {
       result.push([...currentPath, key]);
     }
-  }
+  });
 
-  for (const key of Object.keys(right)) {
-    if (!hasProperty(left, key)) {
-      result.push([...currentPath, key]);
-    } else {
-      const leftVal = left[key];
-      const rightVal = right[key];
-
-      if (isObject(leftVal) && isObject(rightVal)) {
-        const nestedPaths = diffRecursive(leftVal, rightVal, [
-          ...currentPath,
-          key,
-        ]);
-        result.push(...nestedPaths);
-      } else if (leftVal !== rightVal) {
-        result.push([...currentPath, key]);
-      }
-    }
-  }
+  Object.keys(right).forEach((key) =>
+    appendAddedAndUpdated(result, [...currentPath, key], key, left, right),
+  );
 
   return result;
+}
+
+function appendAddedAndUpdated(
+  acc: string[][],
+  pathToKey: string[],
+  key: string,
+  left: Record<string, unknown>,
+  right: Record<string, unknown>,
+): void {
+  if (!hasProperty(left, key)) {
+    // The key is added
+    acc.push(pathToKey);
+  } else {
+    const leftVal = left[key];
+    const rightVal = right[key];
+
+    if (isObject(leftVal) && isObject(rightVal)) {
+      // Find nested different properties
+      const nestedPaths = diffRecursive(leftVal, rightVal, pathToKey);
+      acc.push(...nestedPaths);
+    } else if (leftVal !== rightVal) {
+      // The key is updated
+      acc.push(pathToKey);
+    }
+  }
 }
