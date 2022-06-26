@@ -79,6 +79,7 @@ describe('diff', () => {
 
     it('should return JSONPaths for updated values', () => {
       expect(diff([1, 2, 3], [9, 8, 3])).toEqual(['$.0', '$.1']);
+      expect(diff({ a: 1 }, 2)).toEqual(['$']);
     });
 
     it('should return JSONPaths for added values', () => {
@@ -101,5 +102,9 @@ describe('diff', () => {
     it('should return a JSONPath for different dates', () => {
       expect(diff(left, right)).toEqual(['$']);
     });
+  });
+
+  it('should throw when supplying a non-object as original object', () => {
+    expect(() => diff(1 as unknown as object, {})).toThrowError();
   });
 });

@@ -4,6 +4,13 @@ describe('updatedDiff', () => {
   describe('for objects', () => {
     it('should return updated properties', () => {
       expect(updatedDiff({ a: 1 }, { a: 2 })).toEqual({ a: 2 });
+      expect(updatedDiff({ a: 1 }, { a: undefined })).toEqual({ a: undefined });
+      expect(updatedDiff({ a: 1 }, 2)).toEqual(2);
+      expect(
+        updatedDiff({ a: new Date('2020') }, { a: new Date('2022') }),
+      ).toEqual({
+        a: new Date('2022'),
+      });
     });
 
     it('should not return added or deleted properties', () => {
@@ -35,5 +42,9 @@ describe('updatedDiff', () => {
     it('should return empty object when dates are equal', () => {
       expect(updatedDiff(new Date('2022'), new Date('2022'))).toEqual({});
     });
+  });
+
+  it('should throw when supplying a non-object as original object', () => {
+    expect(() => updatedDiff(1 as unknown as object, {})).toThrowError();
   });
 });

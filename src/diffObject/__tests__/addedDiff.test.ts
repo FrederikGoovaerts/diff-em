@@ -8,6 +8,7 @@ describe('addedDiff', () => {
 
     it('should not return updated or deleted properties', () => {
       expect(addedDiff({ a: 1, b: 2 }, { a: 2 })).toEqual({});
+      expect(addedDiff({ a: 1 }, 2)).toEqual({});
     });
 
     it('should apply addedDiff on nested objects', () => {
@@ -25,5 +26,9 @@ describe('addedDiff', () => {
     it('should not return indices for updated or deleted values', () => {
       expect(addedDiff([1, 2], [3])).toEqual({});
     });
+  });
+
+  it('should throw when supplying a non-object as original object', () => {
+    expect(() => addedDiff(1 as unknown as object, {})).toThrowError();
   });
 });

@@ -20,7 +20,7 @@ function addedDiffRecursive<T extends object>(
   }
 
   if (!isObject(right)) {
-    return [currentPath];
+    return [];
   }
 
   const result: string[][] = [];

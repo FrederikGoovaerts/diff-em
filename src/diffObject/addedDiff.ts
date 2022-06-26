@@ -7,7 +7,7 @@ export function addedDiff<T extends object, U>(left: T, right: U): Diff<T, U> {
   }
 
   if (!isObject(right)) {
-    return right as Diff<T, U>;
+    return {} as Diff<T, U>;
   }
 
   return Object.keys(right).reduce((acc, key) => {

@@ -30,10 +30,6 @@ export function deletedDiff<T extends object, U>(
       if (!isEmptyObject(difference)) {
         acc[key] = difference;
       }
-    } else {
-      if (rightVal === undefined) {
-        acc[key] = rightVal;
-      }
     }
 
     return acc;

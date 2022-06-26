@@ -12,6 +12,10 @@ describe('diff', () => {
         b: {},
         c: null,
       });
+      expect(diff({ a: 1 }, 2)).toEqual(2);
+      expect(diff({ a: new Date('2020') }, { a: new Date('2022') })).toEqual({
+        a: new Date('2022'),
+      });
     });
 
     it('should return undefined for removed properties', () => {
@@ -75,5 +79,9 @@ describe('diff', () => {
     it('should return the updated value for different dates', () => {
       expect(diff(left, right)).toEqual(right);
     });
+  });
+
+  it('should throw when supplying a non-object as original object', () => {
+    expect(() => diff(1 as unknown as object, {})).toThrowError();
   });
 });

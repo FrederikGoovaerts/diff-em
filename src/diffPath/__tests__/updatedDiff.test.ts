@@ -45,6 +45,7 @@ describe('updatedDiff', () => {
   describe('for objects', () => {
     it('should return JSONPaths for updated properties', () => {
       expect(updatedDiff({ a: 1 }, { a: 2 })).toEqual(['$.a']);
+      expect(updatedDiff({ a: 1 }, 2)).toEqual(['$']);
     });
 
     it('should not return JSONPaths for added or deleted properties', () => {
@@ -83,5 +84,9 @@ describe('updatedDiff', () => {
     it('should return a JSONPath for different dates', () => {
       expect(updatedDiff(left, right)).toEqual(['$']);
     });
+  });
+
+  it('should throw when supplying a non-object as original object', () => {
+    expect(() => updatedDiff(1 as unknown as object, {})).toThrowError();
   });
 });

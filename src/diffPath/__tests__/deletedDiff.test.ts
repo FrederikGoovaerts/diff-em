@@ -43,6 +43,7 @@ describe('deletedDiff', () => {
       expect(deletedDiff({ a: 1 }, { a: 2, b: 2 })).toEqual([]);
       expect(deletedDiff({ a: { b: 2 } }, { a: 2 })).toEqual([]);
       expect(deletedDiff({ a: 2 }, 2)).toEqual([]);
+      expect(deletedDiff({ a: 1, b: 2 }, { a: 1, b: undefined })).toEqual([]);
     });
 
     it('should apply deletedDiff on nested objects', () => {
@@ -63,5 +64,9 @@ describe('deletedDiff', () => {
     it('should not return indices for added or updated values', () => {
       expect(deletedDiff([1], [2, 3])).toEqual([]);
     });
+  });
+
+  it('should throw when supplying a non-object as original object', () => {
+    expect(() => deletedDiff(1 as unknown as object, {})).toThrowError();
   });
 });

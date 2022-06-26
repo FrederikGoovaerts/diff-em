@@ -41,10 +41,6 @@ export function deletedDiffRecursive<T extends object, U>(
         key,
       ]);
       result.push(...nestedPaths);
-    } else {
-      if (rightVal === undefined) {
-        result.push([...currentPath, key]);
-      }
     }
   }
 
