@@ -1,11 +1,6 @@
 import { Diff } from './types';
 import { isDate, isEmptyObject, isObject, hasProperty } from '../utils/object';
-
-type DiffMode = 'all' | 'added' | 'updated' | 'deleted';
-
-function isInMode(mode: DiffMode, desiredMode: DiffMode): boolean {
-  return mode === 'all' || mode === desiredMode;
-}
+import { DiffMode, isInMode } from '../utils/diffMode';
 
 function diffBase<T extends object, U>(
   left: T,
