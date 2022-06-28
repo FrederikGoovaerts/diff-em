@@ -1,5 +1,5 @@
 import { DiffMode, isInMode } from '../utils/diffMode';
-import { joinPath, PathOptions } from '../utils/jsonPath';
+import { joinPath, PathOptions } from './jsonPath';
 import { isDate, isObject, hasProperty } from '../utils/object';
 
 export function diffBase<T extends object, U>(

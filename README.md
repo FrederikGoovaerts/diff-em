@@ -33,8 +33,8 @@ import { diffObject } from 'diff-em';
 diffObject({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
 // result: { a: 2, b: { c: undefined }, e: 4 }
 
-diffObject({ a: [1, 2] }, { a: [1, 3, 4] });
-// result: { a: { 1: 3, 2: 4 }}
+diffObject({ a: ['b', 'c'] }, { a: ['b', 'd', 'e'] });
+// result: { a: { 1: 'd', 2: 'e' }}
 ```
 
 ```ts
@@ -50,6 +50,31 @@ deletedDiffObject({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
 // result: { b: { c: undefined } }
 ```
 
+### `diffPatch`
+
+Calculates the differences between two supplied JavaScript objects and returns an array with [JSON Patch (RFC 6902)](https://datatracker.ietf.org/doc/html/rfc6902/) operation objects.
+
+Like `diffObject`, arrays will be regarded as objects with numeric keys in the resulting paths.
+
+```ts
+import { diffPatch } from 'diff-em';
+
+diffPatch({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
+// result:
+// [
+//  {"op": "replace", "path": "/a", "value": 2},
+//  {"op": "remove", "path": "/b/c"},
+//  {"op": "add", "path": "/e", "value": 4}
+// ]
+
+diffPatch({ a: ['b', 'c'] }, { a: ['b', 'd', 'e'] });
+// result:
+// [
+//  {"op": "replace", "path": "/a/1", "value": "d"},
+//  {"op": "add", "path": "/a/2", "value": "e"}
+// ]
+```
+
 ### `diffPath`
 
 Calculates the differences between two supplied JavaScript objects and returns an array with strings in [JSONPath](https://goessner.net/articles/JsonPath/) format. The entries of the array may indicate an added, updated or deleted property between the two objects. For a more granular diff, use `addedDiffPath`, `updatedDiffPath` and `deletedDiffPath`. These will only return paths for added properties, updated properties and deleted properties respectively.
@@ -57,25 +82,25 @@ Calculates the differences between two supplied JavaScript objects and returns a
 Like `diffObject`, arrays will be regarded as objects with numeric keys in the resulting paths.
 
 ```ts
-import { diffObject } from 'diff-em';
+import { diffPath } from 'diff-em';
 
-diffObject({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
+diffPath({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
 // result: ['$.a', '$.b.c', '$.e']
 
-diffObject({ a: [1, 2] }, { a: [1, 3, 4] });
+diffPath({ a: ['b', 'c'] }, { a: ['b', 'd', 'e'] });
 // result: ['$.a.1', '$.a.2']
 ```
 
 ```ts
-import { addedDiffObject, updatedDiffObject, deletedDiffObject } from 'diff-em';
+import { addedDiffPath, updatedDiffPath, deletedDiffPath } from 'diff-em';
 
-addedDiffObject({ a: 1, b: { c: 2 } }, { a: 2, b: { c: 2, d: 3 }, e: 4 });
+addedDiffPath({ a: 1, b: { c: 2 } }, { a: 2, b: { c: 2, d: 3 }, e: 4 });
 // result: ['$.b.d', '$.e']
 
-updatedDiffObject({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
+updatedDiffPath({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
 // result: ['$.a']
 
-deletedDiffObject({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
+deletedDiffPath({ a: 1, b: { c: 2, d: 3 } }, { a: 2, b: { d: 3 }, e: 4 });
 // result: ['$.b.c']
 ```
 

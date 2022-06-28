@@ -15,3 +15,7 @@ import {
 } from './diffPath/diff';
 
 export { diffPath, addedDiffPath, updatedDiffPath, deletedDiffPath };
+
+import { diff as diffPatch } from './diffPatch/diff';
+
+export { diffPatch };
